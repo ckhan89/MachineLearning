@@ -16,6 +16,27 @@ lambda_vec = [0 0.001 0.003 0.01 0.03 0.1 0.3 1 3 10]';
 error_train = zeros(length(lambda_vec), 1);
 error_val = zeros(length(lambda_vec), 1);
 
+p = 8;
+
+m1 = size(y,1);
+m2= size(yval,1);
+
+%X_poly = polyFeatures(X,p);
+%X_poly_val = polyFeatures(Xval,p);
+
+%[X_poly_normal,mu,sigma] = featureNormalize(X_poly);
+%[X_poly_normal_val,mu,sigma] = featureNormalize(X_poly_val);
+
+for i = 1: length(lambda_vec)
+  theta = trainLinearReg(X,y,lambda_vec(i));
+  delta = X*theta - y;
+  delta_val = Xval*theta - yval;
+  error_train(i,1) = (1/(2*m1))*delta'*delta;
+  error_val(i,1) = (1/(2*m2))*delta_val'*delta_val;
+end
+
+
+
 % ====================== YOUR CODE HERE ======================
 % Instructions: Fill in this function to return training errors in 
 %               error_train and the validation errors in error_val. The 
